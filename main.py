@@ -9,7 +9,7 @@ def main(stdscr):
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
     default_color = curses.color_pair(1)
     transparent_color = curses.color_pair(2)
-
+    py_max , px_max = gamescr.getmaxyx()
     px , py = 2,2
     player = [
         " o",
@@ -42,28 +42,32 @@ def main(stdscr):
         
         
         if key == ord("w"):
-            py -= 1
+            if py > 0 :
+                py -= 1
             gamescr.clear()
             gamescr.border(0)
             for i, line in enumerate(player):
                              gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("s"):       
-            py += 1
+            if py +3 < py_max:
+                py += 1
             gamescr.clear()
             gamescr.border(0)
             for i, line in enumerate(player):
                              gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("d"):
-             px += 1
+             if px + 4< px_max:
+                px += 1
              gamescr.clear()
              gamescr.border(0)
              for i, line in enumerate(player):
                               gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("a"):
-             px -= 1
+             if px > 0:
+                px -= 1
              gamescr.clear()
              gamescr.border(0)
              for i, line in enumerate(player):
