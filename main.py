@@ -3,13 +3,13 @@ from curses import curs_set, wrapper
 
 
 def main(stdscr):
-    gamescr = curses.newwin(35, 175, 2, 2)
+    
     curs_set(0)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
     default_color = curses.color_pair(1)
     transparent_color = curses.color_pair(2)
-    py_max , px_max = gamescr.getmaxyx()
+    
     px , py = 2,2
     player = [
         " o",
@@ -23,6 +23,9 @@ def main(stdscr):
     stdscr.addstr(0, 0, "Press 'p' key to start the game and 'q' to quit",default_color)
     stdscr.refresh()
     while True:
+        scr_y , scr_x = stdscr.getmaxyx()
+        gamescr = curses.newwin(scr_y - 2, scr_x - 2, 2, 2)
+        py_max , px_max = gamescr.getmaxyx()
         key = stdscr.getch()
         if key == ord("q"):
             break
