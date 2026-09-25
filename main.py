@@ -1,6 +1,6 @@
 import curses
 from curses import curs_set, wrapper
-
+import random
 
 current_line = 0
 displayed_lines = {}
@@ -12,7 +12,8 @@ def main(stdscr):
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
     default_color = curses.color_pair(1)
     transparent_color = curses.color_pair(2)
-
+    r1 = random.randint(0,100)
+    r2 = random.randint(0,100)
     
     px , py = 10,10
     player = [
@@ -37,15 +38,19 @@ def main(stdscr):
     stdscr.clear()
     text("Press 'p' key to start the game and 'q' to quit",default_color)
     stdscr.refresh()
+
     while True:
         scr_y , scr_x = stdscr.getmaxyx()
         gamescr = curses.newwin(scr_y - 2, (scr_x - 2)//2, 2,scr_x//2)
         py_max , px_max = gamescr.getmaxyx()
+        my , mx = (py_max//50)*(r1/2), (px_max//50)*(r2/2)
+        my , mx = int(my) , int(mx)
         key = stdscr.getch()
 
         
         if px < 3 or py < 3 or px + 3 > px_max - 3 or py + 3 > py_max - 3:
                 curses.beep()
+                text("you can't go out of the border!", default_color)
 
         if key == ord("q"):
             break
@@ -64,11 +69,14 @@ def main(stdscr):
                 
     
         
-        if px == px_max//4 and py == py_max//4:
+        if px == (px_max//5)*3 and py == (py_max//5)*3:
                 text("do you want to do a mission? (y/n)", default_color)
                 if stdscr.getch() == ord("y"):
                         text("lets go!", default_color)
-                    
+                        text("level 1 : run away! you have no weapons!", default_color)
+                        gamescr.clear()
+                        gamescr.addstr(my, mx, "XXXXX", default_color)
+                        
                 elif stdscr.getch() == ord("n"):
                         text("nevermind!", default_color)
                         
@@ -111,8 +119,12 @@ def main(stdscr):
              for i, line in enumerate(player):
                               gamescr.addstr(py + i , px, line , default_color)
 
-        gamescr.addch(py_max//4, px_max//4, "M", default_color)
-        gamescr.addch(py_max//5, px_max//5, "S", default_color)
+        elif key == ord("m"):
+               gamescr.addch((py_max//5)*3, (px_max//5)*3, "M", default_color)
+               gamescr.addch(py_max//5, px_max//5, "S", default_color)
+        
+        gamescr.border(0)
+        
 
         gamescr.refresh()
 
