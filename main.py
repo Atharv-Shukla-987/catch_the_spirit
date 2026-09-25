@@ -4,6 +4,7 @@ import random
 
 current_line = 0
 displayed_lines = {}
+level = False
 
 def main(stdscr):
     
@@ -40,11 +41,12 @@ def main(stdscr):
     stdscr.refresh()
 
     while True:
+        global level
         scr_y , scr_x = stdscr.getmaxyx()
         gamescr = curses.newwin(scr_y - 2, (scr_x - 2)//2, 2,scr_x//2)
         py_max , px_max = gamescr.getmaxyx()
-        my , mx = (py_max//50)*(r1/2), (px_max//50)*(r2/2)
-        my , mx = int(my) , int(mx)
+        my = random.randint(3, max(4, py_max - 5))
+        mx = random.randint(3, max(4, px_max - 8))
         key = stdscr.getch()
 
         
@@ -75,7 +77,8 @@ def main(stdscr):
                         text("lets go!", default_color)
                         text("level 1 : run away! you have no weapons!", default_color)
                         gamescr.clear()
-                        gamescr.addstr(my, mx, "XXXXX", default_color)
+                        level = True
+                        
                         
                 elif stdscr.getch() == ord("n"):
                         text("nevermind!", default_color)
@@ -123,6 +126,8 @@ def main(stdscr):
                gamescr.addch((py_max//5)*3, (px_max//5)*3, "M", default_color)
                gamescr.addch(py_max//5, px_max//5, "S", default_color)
         
+        if level:
+               gamescr.addstr(my, mx, "XXXXX", default_color)
         gamescr.border(0)
         
 
