@@ -2,8 +2,8 @@ import curses
 from curses import curs_set, wrapper
 
 
-
-
+current_line = 0
+displayed_lines = {}
 
 def main(stdscr):
     
@@ -21,11 +21,16 @@ def main(stdscr):
         "/ \\"
 
     ]
-
+    
     def text(i,c):
-       current_line = 0
+       global current_line
+       if current_line > 0 :
+            prev_line = displayed_lines[current_line - 1]
+            stdscr.addstr(current_line - 1 , 0 , prev_line , transparent_color)
        stdscr.addstr(current_line , 0,i,c)
+       displayed_lines[current_line] = i
        current_line += 1
+       
        
               
 
@@ -63,18 +68,16 @@ def main(stdscr):
                 text("do you want to do a mission? (y/n)", default_color)
                 if stdscr.getch() == ord("y"):
                         text("lets go!", default_color)
-                        text("do you want to do a mission? (y/n)", transparent_color)
+                    
                 elif stdscr.getch() == ord("n"):
                         text("nevermind!", default_color)
-                        text("do you want to do a mission? (y/n)", transparent_color)
+                        
         elif px == px_max//5 and py == py_max//5:
             text("do you want to shop? (y/n)", default_color)
             if stdscr.getch() == ord("y"):
                 text("lets go!", default_color)
-                text("do you want to shop? (y/n)", transparent_color)
             elif stdscr.getch() == ord("n"):
                 text("nevermind!", default_color)
-                text("do you want to shop? (y/n)", transparent_color)
 
         if key == ord("w"):
             if py > 0 :
