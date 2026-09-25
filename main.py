@@ -1,10 +1,10 @@
 import curses
-from curses import wrapper
-import time
+from curses import curs_set, wrapper
+
 
 def main(stdscr):
     gamescr = curses.newwin(35, 175, 2, 2)
-    
+    curs_set(0)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
     default_color = curses.color_pair(1)
@@ -30,7 +30,10 @@ def main(stdscr):
             game_start = 1
             gamescr.clear()
             gamescr.border(0)
-
+            for i in range(2000001):
+                    if i % 100000 == 0:
+                            curses.beep()
+                            curses.flash()
             for i, line in enumerate(player):
                              gamescr.addstr(py + i , px, line , default_color)
                 
