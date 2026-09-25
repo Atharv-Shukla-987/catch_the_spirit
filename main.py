@@ -24,9 +24,11 @@ def main(stdscr):
     stdscr.refresh()
     while True:
         scr_y , scr_x = stdscr.getmaxyx()
-        gamescr = curses.newwin(scr_y - 2, scr_x - 2, 2, 2)
+        gamescr = curses.newwin(scr_y - 2, (scr_x - 2)//2, 2,scr_x//2)
         py_max , px_max = gamescr.getmaxyx()
         key = stdscr.getch()
+        if px < 3 or py < 3 or px + 3 > px_max - 3 or py + 3 > py_max - 3:
+                curses.beep()
         if key == ord("q"):
             break
         if key == ord("p"):
