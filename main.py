@@ -5,6 +5,8 @@ import random
 current_line = 0
 displayed_lines = {}
 level = False
+my , mx = None , None
+scr_y , scr_x = None , None
 
 def main(stdscr):
     
@@ -28,25 +30,31 @@ def main(stdscr):
        global current_line
        if current_line > 0 :
             prev_line = displayed_lines[current_line - 1]
-            stdscr.addstr(current_line - 1 , 0 , prev_line , transparent_color)
-       stdscr.addstr(current_line , 0,i,c)
+            _text.addstr(current_line - 1 , 0 , prev_line , transparent_color)
+       _text.addstr(current_line , 0,i,c)
        displayed_lines[current_line] = i
        current_line += 1
        
        
               
 
-    stdscr.clear()
-    text("Press 'p' key to start the game and 'q' to quit",default_color)
-    stdscr.refresh()
+    
 
     while True:
         global level
+        global my , mx
+        global scr_y , scr_x
         scr_y , scr_x = stdscr.getmaxyx()
+        _text = curses.newwin(scr_y , (scr_x )//2 ,0,0)
+        
         gamescr = curses.newwin(scr_y - 2, (scr_x - 2)//2, 2,scr_x//2)
         py_max , px_max = gamescr.getmaxyx()
-        my = random.randint(3, max(4, py_max - 5))
-        mx = random.randint(3, max(4, px_max - 8))
+
+        if my is None :
+               if mx is None:
+                    my = random.randint(3, max(4, py_max - 5))
+                    mx = random.randint(3, max(4, px_max - 8))
+        
         key = stdscr.getch()
 
         
@@ -58,7 +66,7 @@ def main(stdscr):
             break
 
         if key == ord("p"):
-            game_start = True
+            text("Press 'p' key to start the game and 'q' to quit",default_color)
             gamescr.clear()
             gamescr.border(0)
             
@@ -72,23 +80,25 @@ def main(stdscr):
     
         
         if px == (px_max//5)*3 and py == (py_max//5)*3:
-                text("do you want to do a mission? (y/n)", default_color)
-                if stdscr.getch() == ord("y"):
-                        text("lets go!", default_color)
-                        text("level 1 : run away! you have no weapons!", default_color)
-                        gamescr.clear()
-                        level = True
-                        
-                        
-                elif stdscr.getch() == ord("n"):
-                        text("nevermind!", default_color)
+                if level == False:
+                        text("do you want to do a mission? (y/n)", default_color)
+                        if stdscr.getch() == ord("y"):
+                            text("lets go!", default_color)
+                            text("level 1 : run away! you have no weapons!", default_color)
+                            gamescr.clear()
+                            level = True
+                                               
+                                               
+                        elif stdscr.getch() == ord("n"):
+                            text("nevermind!", default_color)
                         
         elif px == px_max//5 and py == py_max//5:
-            text("do you want to shop? (y/n)", default_color)
-            if stdscr.getch() == ord("y"):
-                text("lets go!", default_color)
-            elif stdscr.getch() == ord("n"):
-                text("nevermind!", default_color)
+            if level == False:
+                   text("do you want to shop? (y/n)", default_color)
+                   if stdscr.getch() == ord("y"):
+                        text("lets go!", default_color)
+                   elif stdscr.getch() == ord("n"):
+                        text("nevermind!", default_color)
 
         if key == ord("w"):
             if py > 0 :
@@ -128,9 +138,23 @@ def main(stdscr):
         
         if level:
                gamescr.addstr(my, mx, "XXXXX", default_color)
-        gamescr.border(0)
-        
 
+        gamescr.clear()
+        _text.clear()
+            
+        _text.refresh()
+        gamescr.border(
+        ord('X'),
+        ord('X'),
+        ord('o'),
+        ord('o'),
+        ord('0'),
+        ord('0'),
+        ord('0'),
+        ord('0'),
+        )
+
+        
         gamescr.refresh()
 
 if __name__ == "__main__":
