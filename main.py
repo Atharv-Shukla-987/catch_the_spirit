@@ -8,7 +8,7 @@ level = False
 my , mx = None , None
 scr_y , scr_x = None , None
 boundary_warn = False
-
+time = 0
 game_start= False
 
 def main(stdscr):
@@ -18,6 +18,7 @@ def main(stdscr):
     global boundary_warn
     global current_line
     global game_start
+    global time
     curs_set(0)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
@@ -52,7 +53,7 @@ def main(stdscr):
  
     while True:
         
-        
+        time += 1
         py_max , px_max = gamescr.getmaxyx()
 
         if my is None :
@@ -92,7 +93,7 @@ def main(stdscr):
                             text("level 1 : run away! you have no weapons!", default_color)
                             gamescr.clear()
                             level = True
-                                               
+                                   
                                                
                         elif stdscr.getch() == ord("n"):
                             text("nevermind!", default_color)
@@ -142,7 +143,19 @@ def main(stdscr):
                gamescr.addch(py_max//5, px_max//5, "S", default_color)
         
         if level:
-               gamescr.addstr(my, mx, "X", default_color)
+           
+            if time%2 == 0:
+               if px > mx :
+                    mx+=1
+               elif px < mx :
+                    mx-=1
+               
+               if py > my :
+                    my +=1
+               elif py < my :
+                    my-=1
+                                                       
+            gamescr.addstr(my, mx, "X", default_color)
 
     
             
