@@ -7,26 +7,25 @@ displayed_lines = {}
 level = False
 my , mx = None , None
 scr_y , scr_x = None , None
-_text = None
-game_scr = None
+boundary_warn = False
+
 game_start= False
 
 def main(stdscr):
     global level
     global my , mx
     global scr_y , scr_x
-    global _text
-    global game_scr
+    global boundary_warn
+    global current_line
     global game_start
     curs_set(0)
-    stdscr.nodelay(True)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
     default_color = curses.color_pair(1)
     transparent_color = curses.color_pair(2)
 
     scr_y , scr_x = stdscr.getmaxyx()
-    _text = curses.newwin(scr_y , (scr_x )//2 ,0,0)
+
     gamescr = curses.newwin(scr_y - 2, (scr_x - 2)//2, 2,scr_x//2)
     
     px , py = 10,10
@@ -39,33 +38,21 @@ def main(stdscr):
     
     def text(i,c):
        global current_line
-       if current_line > 0 :
+       if current_line < scr_y :
+        if current_line > 0 :
             prev_line = displayed_lines[current_line - 1]
-            _text.addstr(current_line - 1 , 0 , prev_line , transparent_color)
-       _text.addstr(current_line , 0,i,c)
-       displayed_lines[current_line] = i
-       current_line += 1
+            stdscr.addstr(current_line - 1 , 0 , prev_line , transparent_color)
+        stdscr.addstr(current_line , 0,i,c)
+        displayed_lines[current_line] = i
+        current_line += 1
 
-    
- 
+    stdscr.clear()
     text("Press 'p' key to start the game and 'q' to quit", default_color)
+    stdscr.refresh()
+ 
     while True:
         
-        _text.clear()
-        _text.refresh()
-        gamescr.clear()
         
-        gamescr.border(
-            ord('X'),
-            ord('X'),
-            ord('o'),
-            ord('o'),
-            ord('0'),
-            ord('0'),
-            ord('0'),
-            ord('0'),
-                )
-
         py_max , px_max = gamescr.getmaxyx()
 
         if my is None :
@@ -75,20 +62,19 @@ def main(stdscr):
         
         key = stdscr.getch()
 
-        if game_start == False:
-               game_start = True
-               
-                             
-        
         if px < 3 or py < 3 or px + 3 > px_max - 3 or py + 3 > py_max - 3:
-                curses.beep()
+            curses.beep()
+            if boundary_warn == False:
                 text("you can't go out of the border!", default_color)
+                boundary_warn = True
 
         if key == ord("q"):
             break
 
         if key == ord("p"):
-            
+            game_start = True
+            gamescr.clear()
+            gamescr.border(0)
             for i in range(2000001):
                     if i % 100000 == 0:
                             curses.beep()
@@ -122,28 +108,32 @@ def main(stdscr):
         if key == ord("w"):
             if py > 0 :
                 py -= 1
-            
+            gamescr.clear()
+            gamescr.border(0)
             for i, line in enumerate(player):
                              gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("s"):       
             if py +3 < py_max:
                 py += 1
-        
+            gamescr.clear()
+            gamescr.border(0)
             for i, line in enumerate(player):
                              gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("d"):
              if px + 4< px_max:
                 px += 1
-         
+             gamescr.clear()
+             gamescr.border(0)
              for i, line in enumerate(player):
                               gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("a"):
              if px > 0:
                 px -= 1
-         
+             gamescr.clear()
+             gamescr.border(0)
              for i, line in enumerate(player):
                               gamescr.addstr(py + i , px, line , default_color)
 
@@ -152,9 +142,9 @@ def main(stdscr):
                gamescr.addch(py_max//5, px_max//5, "S", default_color)
         
         if level:
-               gamescr.addstr(my, mx, "XXXXX", default_color)
+               gamescr.addstr(my, mx, "X", default_color)
 
-        
+    
             
         
         gamescr.refresh()
