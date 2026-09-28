@@ -145,16 +145,38 @@ def main(stdscr):
         if level:
            
             if time%2 == 0:
-               if px > mx :
-                    mx+=1
-               elif px < mx :
-                    mx-=1
-               
-               if py > my :
-                    my +=1
-               elif py < my :
-                    my-=1
-                                                       
+               moves = [
+                     (-1,0),
+                     (1,0),
+                     (0,-1),
+                     (0,1),
+                     (-1,-1),
+                     (-1,1),
+                     (1,-1),
+                     (1,1)
+               ]
+               best_move = None 
+               best_distance = -1
+
+               for dy , dx in moves :
+                     new_y = my + dy
+                     new_x = mx + dx
+
+                     if new_y < 1 or new_y > py_max -2:
+                           continue
+                     if new_x < 1 or new_x > px_max -2:
+                           continue
+
+                     dis_sq = (new_x - px)**2 + (new_y - py)**2
+
+                     if dis_sq > best_distance :
+                           best_distance = dis_sq
+                           best_move = (dy,dx)
+
+               if best_move is not None:
+                           my += best_move[0]
+                           mx += best_move[1]    
+
             gamescr.addstr(my, mx, "X", default_color)
 
     
