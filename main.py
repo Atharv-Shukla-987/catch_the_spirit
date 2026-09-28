@@ -39,13 +39,31 @@ def main(stdscr):
     
     def text(i,c):
        global current_line
-       if current_line < scr_y :
-        if current_line > 0 :
-            prev_line = displayed_lines[current_line - 1]
-            stdscr.addstr(current_line - 1 , 0 , prev_line , transparent_color)
-        stdscr.addstr(current_line , 0,i,c)
-        displayed_lines[current_line] = i
-        current_line += 1
+       global displayed_lines
+
+       i = i[:scr_x - 1]
+
+       if current_line >= scr_y:
+              displayed_lines.pop(0,None)
+              displayed_lines = {
+                     line - 1 : content 
+                     for line , content in displayed_lines.items()
+              }
+              displayed_lines[scr_y -1] = i
+              stdscr.clear()
+
+              for line , content in displayed_lines.items():
+                     stdscr.addstr(line , 0 , content , transparent_color)
+
+       else:
+              displayed_lines[current_line] = i
+              stdscr.addstr(current_line,0,i,c)
+              if current_line > 0:
+               prevs_con = displayed_lines[current_line -1]
+               stdscr.addstr(current_line -1 , 0, prevs_con,transparent_color)
+              current_line += 1
+
+       stdscr.refresh()
 
     stdscr.clear()
     text("Press 'p' key to start the game and 'q' to quit", default_color)
@@ -65,6 +83,7 @@ def main(stdscr):
 
         if px < 3 or py < 3 or px + 3 > px_max - 3 or py + 3 > py_max - 3:
             curses.beep()
+            text("you can't go out of the border!", default_color)
             if boundary_warn == False:
                 text("you can't go out of the border!", default_color)
                 boundary_warn = True
