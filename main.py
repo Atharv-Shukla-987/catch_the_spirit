@@ -10,7 +10,36 @@ scr_y , scr_x = None , None
 boundary_warn = False
 time = 0
 game_start= False
-coins = 0
+coins = 550
+shop_skin = [(100 , [
+        " ^",
+        "/|\\",
+        "/ \\"
+
+    ]), (150 , [
+        " _ ",
+        "(o)",
+        "/|\\",
+        "/ \\"
+    ]),( 250 , [
+        "/\\ /\\",
+        "(o_o)",
+        "\\|/",
+        "/ \\"
+    ]) ,
+       (300 , [
+        " /\\_/\\\\",
+        "( O O )",
+        " > ^ < ",
+        " /   \\ "
+    ])
+    ]
+default_skin = [
+        " o",
+        "/|\\",
+        "/ \\"
+
+    ]
 
 def main(stdscr):
     global level
@@ -21,6 +50,9 @@ def main(stdscr):
     global game_start
     global time
     global coins
+    global shop_skin
+    global default_skin
+
     curs_set(0)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
@@ -32,11 +64,11 @@ def main(stdscr):
     gamescr = curses.newwin(scr_y - 2, (scr_x - 2)//2, 2,scr_x//2)
     
     px , py = 10,10
-    player = [
-        " o",
-        "/|\\",
-        "/ \\"
-
+    player = default_skin
+    owned = [0]
+    mob = [
+        "(o o)",
+        "|___|"
     ]
     
     def text(i,c):
@@ -131,8 +163,30 @@ def main(stdscr):
         elif px == px_max//5 and py == py_max//5:
             if level == False:
                    text(f"You have {coins} coins, wanna buy something? (y/n)", default_color)
-                   if stdscr.getch() == ord("y"):
-                        text("lets go!", default_color)
+                   ans = stdscr.getch()
+                   if ans == ord("y"):
+                        text("Which skin you wanna buy?",default_color)
+                        for i,( price , sprite) in enumerate(shop_skin):
+                              status = "OWNED" if i in owned else f"{price} coins"
+                              text(f"{i +1}. skin - {status} coins",default_color)
+                              for line in sprite:
+                                    text(line,default_color)
+
+                        choice = stdscr.getch() - ord("1")
+
+                        if 0 <= choice < len(shop_skin):
+                              price, sprite = shop_skin[choice]
+
+                              if choice in owned:
+                                    player = sprite
+                                    text("Skin equipped!", default_color)
+                              elif coins >= price:
+                                    coins -= price
+                                    owned.append(choice)
+                                    player = sprite
+                                    text("skin purchased and equipped", default_color)
+                              else:
+                                    text("Not enough coins!",default_color)
                    elif stdscr.getch() == ord("n"):
                         text("nevermind!", default_color)
 
@@ -155,7 +209,7 @@ def main(stdscr):
                              gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("s"):       
-            if py +3 < py_max:
+            if py +4 < py_max:
                 py += 1
             gamescr.clear()
             gamescr.border(
@@ -172,7 +226,7 @@ def main(stdscr):
                              gamescr.addstr(py + i , px, line , default_color)
 
         elif key == ord("d"):
-             if px + 4< px_max:
+             if px + 7< px_max:
                 px += 1
              gamescr.clear()
              gamescr.border(
@@ -231,9 +285,9 @@ def main(stdscr):
                      new_y = my + dy
                      new_x = mx + dx
 
-                     if new_y < 1 or new_y > py_max -2:
+                     if new_y < 1 or new_y +2> py_max -2:
                            continue
-                     if new_x < 1 or new_x > px_max -2:
+                     if new_x < 1 or new_x +5 > px_max -2:
                            continue
 
                      dis_sq = (new_x - px)**2 + (new_y - py)**2
@@ -246,7 +300,8 @@ def main(stdscr):
                            my += best_move[0]
                            mx += best_move[1]    
 
-            gamescr.addstr(my, mx, "X", default_color)
+            for i, line in enumerate(mob):
+                gamescr.addstr(my + i , mx, line , default_color)
             if (px <= mx <= px +3) and (py <= my<= py +2):
                 text("You won the game ! you earned 100 coins ....",default_color)
                 coins += 100
