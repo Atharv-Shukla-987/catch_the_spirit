@@ -10,6 +10,7 @@ scr_y , scr_x = None , None
 boundary_warn = False
 time = 0
 game_start= False
+coins = 0
 
 def main(stdscr):
     global level
@@ -19,6 +20,7 @@ def main(stdscr):
     global current_line
     global game_start
     global time
+    global coins
     curs_set(0)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK,curses.COLOR_BLACK)
@@ -81,9 +83,8 @@ def main(stdscr):
         
         key = stdscr.getch()
 
-        if px < 3 or py < 3 or px + 3 > px_max - 3 or py + 3 > py_max - 3:
+        if px < 2 or py < 2 or px + 2 > px_max - 2 or py + 2 > py_max - 2:
             curses.beep()
-            text("you can't go out of the border!", default_color)
             if boundary_warn == False:
                 text("you can't go out of the border!", default_color)
                 boundary_warn = True
@@ -94,7 +95,17 @@ def main(stdscr):
         if key == ord("p"):
             game_start = True
             gamescr.clear()
-            gamescr.border(0)
+            gamescr.border(
+            ord('X'),
+            ord('X'),
+            ord('o'),
+            ord('o'),
+            ord('0'),
+            ord('0'),
+            ord('0'),
+            ord('0'),
+                )
+
             for i in range(2000001):
                     if i % 100000 == 0:
                             curses.beep()
@@ -109,17 +120,17 @@ def main(stdscr):
                         text("do you want to do a mission? (y/n)", default_color)
                         if stdscr.getch() == ord("y"):
                             text("lets go!", default_color)
-                            text("level 1 : run away! you have no weapons!", default_color)
+                            text("level 1 : catch the sprit!", default_color)
                             gamescr.clear()
                             level = True
-                                   
+                            
                                                
                         elif stdscr.getch() == ord("n"):
                             text("nevermind!", default_color)
                         
         elif px == px_max//5 and py == py_max//5:
             if level == False:
-                   text("do you want to shop? (y/n)", default_color)
+                   text(f"You have {coins} coins, wanna buy something? (y/n)", default_color)
                    if stdscr.getch() == ord("y"):
                         text("lets go!", default_color)
                    elif stdscr.getch() == ord("n"):
@@ -129,7 +140,17 @@ def main(stdscr):
             if py > 0 :
                 py -= 1
             gamescr.clear()
-            gamescr.border(0)
+            gamescr.border(
+            ord('X'),
+            ord('X'),
+            ord('o'),
+            ord('o'),
+            ord('0'),
+            ord('0'),
+            ord('0'),
+            ord('0'),
+                )
+
             for i, line in enumerate(player):
                              gamescr.addstr(py + i , px, line , default_color)
 
@@ -137,7 +158,16 @@ def main(stdscr):
             if py +3 < py_max:
                 py += 1
             gamescr.clear()
-            gamescr.border(0)
+            gamescr.border(
+            ord('X'),
+            ord('X'),
+            ord('o'),
+            ord('o'),
+            ord('0'),
+            ord('0'),
+            ord('0'),
+            ord('0'),
+                )
             for i, line in enumerate(player):
                              gamescr.addstr(py + i , px, line , default_color)
 
@@ -145,7 +175,17 @@ def main(stdscr):
              if px + 4< px_max:
                 px += 1
              gamescr.clear()
-             gamescr.border(0)
+             gamescr.border(
+             ord('X'),
+             ord('X'),
+             ord('o'),
+             ord('o'),
+             ord('0'),
+             ord('0'),
+             ord('0'),
+             ord('0'),
+                )
+
              for i, line in enumerate(player):
                               gamescr.addstr(py + i , px, line , default_color)
 
@@ -153,7 +193,17 @@ def main(stdscr):
              if px > 0:
                 px -= 1
              gamescr.clear()
-             gamescr.border(0)
+             gamescr.border(
+             ord('X'),
+             ord('X'),
+             ord('o'),
+             ord('o'),
+             ord('0'),
+             ord('0'),
+             ord('0'),
+             ord('0'),
+                )
+
              for i, line in enumerate(player):
                               gamescr.addstr(py + i , px, line , default_color)
 
@@ -197,7 +247,11 @@ def main(stdscr):
                            mx += best_move[1]    
 
             gamescr.addstr(my, mx, "X", default_color)
-
+            if (px <= mx <= px +3) and (py <= my<= py +2):
+                text("You won the game ! you earned 100 coins ....",default_color)
+                coins += 100
+                level = False
+            
     
             
         
