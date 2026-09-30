@@ -1,12 +1,17 @@
 import curses
 from curses import curs_set, wrapper
 import random
+from playsound3 import playsound
 
 current_line = 0
 displayed_lines = {}
 level = False
 my , mx = None , None
 scr_y , scr_x = None , None
+flicker = False
+flicker_time = 0
+sound = None
+soundlvl = None
 boundary_warn = False
 time = 0
 game_start= False
@@ -52,6 +57,10 @@ def main(stdscr):
     global coins
     global shop_skin
     global default_skin
+    global flicker
+    global flicker_time
+    global soundlvl
+    global sound
 
     curs_set(0)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
@@ -125,6 +134,7 @@ def main(stdscr):
             break
 
         if key == ord("p"):
+            sound = playsound("bg_song.mp3", block=False )
             game_start = True
             gamescr.clear()
             gamescr.border(
@@ -138,14 +148,12 @@ def main(stdscr):
             ord('0'),
                 )
 
-            for i in range(2000001):
-                    if i % 100000 == 0:
-                            curses.beep()
-                            curses.flash()
-            for i, line in enumerate(player):
-                             gamescr.addstr(py + i , px, line , default_color)
-                
-    
+            flicker = True
+            flicker_time = 2500
+            
+            
+                          
+            
         
         if px == (px_max//5)*3 and py == (py_max//5)*3:
                 if level == False:
@@ -154,6 +162,8 @@ def main(stdscr):
                             text("lets go!", default_color)
                             text("level 1 : catch the sprit!", default_color)
                             gamescr.clear()
+                            sound.stop()
+                            soundlvl = playsound("lvl.mp3",block=False)
                             level = True
                             
                                                
@@ -165,6 +175,16 @@ def main(stdscr):
                    text(f"You have {coins} coins, wanna buy something? (y/n)", default_color)
                    ans = stdscr.getch()
                    if ans == ord("y"):
+                        gamescr.border(
+                                    ord('X'),
+                                    ord('X'),
+                                    ord('o'),
+                                    ord('o'),
+                                    ord('0'),
+                                    ord('0'),
+                                    ord('0'),
+                                    ord('0'),
+                                        )
                         text("Which skin you wanna buy?",default_color)
                         for i,( price , sprite) in enumerate(shop_skin):
                               status = "OWNED" if i in owned else f"{price} coins"
@@ -305,10 +325,40 @@ def main(stdscr):
             if (px <= mx <= px +3) and (py <= my<= py +2):
                 text("You won the game ! you earned 100 coins ....",default_color)
                 coins += 100
+                soundlvl.stop()
+                sound = playsound("bg_song.mp3",block=False)
                 level = False
             
-    
-            
+        if flicker:
+              laugh = playsound("churail_wali_hasi.mp3",block=False)
+              if flicker_time > 0:
+                     for i in range( flicker_time):
+                        if i % 10 == 0 :
+                              curses.flash()
+                        flicker_time -=1
+              else:
+                    flicker = False     
+                    laugh.stop()     
+                    sound = playsound("bg_song.mp3",block=False)  
+                    text("You are invited to halloween party...(enter)",default_color)
+                    yes = stdscr.getkey()
+                    if yes in ('\n', '\r', 'KEY_ENTER'):
+                                 text(" you dont have any costume nor money....(enter)",default_color)
+                                 yes1 = stdscr.getkey()
+                                 if yes1 in ('\n', '\r', 'KEY_ENTER'):
+                                  text("But you have a supernatural ability(enter) ,",default_color)
+                                  yes2 = stdscr.getkey()
+                                  if yes2 in ('\n', '\r', 'KEY_ENTER'):
+                                    text("you can see ghosts and now you have to catch spirts to earn money(enter)",default_color)
+                                    yes3 = stdscr.getkey()
+                                    if yes3 in ('\n', '\r', 'KEY_ENTER'):
+                                      text("for mission and shop you have to go to spirtual points in your world,(enter)",default_color)
+                                      yes4 = stdscr.getkey()
+                                      if yes4 in ('\n', '\r', 'KEY_ENTER'):
+                                        text(" use your ghost vision(press m)(enter)",default_color)
+                                        yes = stdscr.getkey()
+                                        if yes in ('\n', '\r', 'KEY_ENTER'):
+                                              text("Use WASD to move",default_color)
         
         gamescr.refresh()
 
