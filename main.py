@@ -15,7 +15,7 @@ soundlvl = None
 boundary_warn = False
 time = 0
 game_start= False
-coins = 550
+coins = 0
 shop_skin = [(100 , [
         " ^",
         "/|\\",
@@ -185,10 +185,10 @@ def main(stdscr):
                                     ord('0'),
                                     ord('0'),
                                         )
-                        text("Which skin you wanna buy?",default_color)
+                        text("Which costume you wanna buy?",default_color)
                         for i,( price , sprite) in enumerate(shop_skin):
                               status = "OWNED" if i in owned else f"{price} coins"
-                              text(f"{i +1}. skin - {status} coins",default_color)
+                              text(f"{i +1}. costume - {status} coins",default_color)
                               for line in sprite:
                                     text(line,default_color)
 
@@ -199,12 +199,12 @@ def main(stdscr):
 
                               if choice in owned:
                                     player = sprite
-                                    text("Skin equipped!", default_color)
+                                    text("costume equipped!", default_color)
                               elif coins >= price:
                                     coins -= price
                                     owned.append(choice)
                                     player = sprite
-                                    text("skin purchased and equipped", default_color)
+                                    text("costume purchased and equipped", default_color)
                               else:
                                     text("Not enough coins!",default_color)
                    elif stdscr.getch() == ord("n"):
