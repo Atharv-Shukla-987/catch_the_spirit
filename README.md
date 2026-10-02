@@ -12,4 +12,12 @@ It starts with horror blink effect and witch laughter , then with creepy backgro
 
 ## Shop
 
+see the shop here 
+
+<img width="370" height="350" alt="image" src="https://github.com/user-attachments/assets/aafe969e-12fb-4346-905c-5c1d9d359983" />
+
+## how to play
+
+Here's the link to download zip file , download and enjoy!!!
+
 
