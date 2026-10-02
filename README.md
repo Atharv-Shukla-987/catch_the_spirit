@@ -20,4 +20,5 @@ see the shop here
 
 Here's the link to download zip file , download and enjoy!!!
 
+https://github.com/Atharv-Shukla-987/catch_the_spirit/releases/tag/catch_the_spirit
 
