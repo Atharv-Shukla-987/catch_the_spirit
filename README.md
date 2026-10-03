@@ -8,11 +8,11 @@ It is a terminal game made using curses library in python. It has a game screen 
 
 ## Game
 
-It starts with horror blink effect and witch laughter , then with creepy background sound the game screen appears on right and story on left , press enter to go through the story . You can control player movement with WASD keys and press "m" for ghost vision and see spiritual points . Point "s" refers to ghostly shop and point "m" refers to missions . For missions you have to catch apirits that are running away from you as you are a famous spirit catcher, each mission will give you 100 coins . Mission has a different sound track and shop has costumes with different prizes.
+It starts with horror blink effect and witch laughter , then with creepy background sound the game screen appears on right and story on left , press enter to go through the story . You can control player movement with WASD keys and press "m" for ghost vision and see spiritual points . Point "s" refers to ghostly shop and point "m" refers to missions . For missions you have to catch apirits that are running away from you as you are a famous spirit catcher, each mission will give you 100 coins . Mission has a different sound track.
 
 ## Shop
 
-see the shop here 
+Once you've earned enough coins visit the ghostly shop to purchase Halloween costumes. Different costumes have different prices. Collect coins from missions and spend them to customize your character.
 
 <img width="370" height="350" alt="image" src="https://github.com/user-attachments/assets/aafe969e-12fb-4346-905c-5c1d9d359983" />
 
