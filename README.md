@@ -18,7 +18,28 @@ see the shop here
 
 ## how to play
 
-Here's the link to download zip file , download and enjoy!!!
+### option 1 - download the release
 
+Download the game from the GitHub release: 
 https://github.com/Atharv-Shukla-987/catch_the_spirit/releases/tag/catch_the_spirit
 
+Extract the zip file and run the exe file and enjoy your hunt for halloween costume.
+
+### option 2 - run from source
+
+Clone the repository:
+```
+git clone https://github.com/Atharv-Shukla-987/catch_the_spirit.git
+```
+Enter the project directory:
+```
+cd catch_the_spirit
+```
+Install the required Python package:
+```
+pip install playsound3
+```
+Run the game:
+```
+python main.py
+```
