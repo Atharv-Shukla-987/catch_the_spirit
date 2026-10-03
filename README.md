@@ -21,8 +21,9 @@ see the shop here
 ### option 1 - download the release
 
 Download the game from the GitHub release: 
+```
 https://github.com/Atharv-Shukla-987/catch_the_spirit/releases/tag/catch_the_spirit
-
+```
 Extract the zip file and run the exe file and enjoy your hunt for halloween costume.
 
 ### option 2 - run from source
@@ -43,3 +44,5 @@ Run the game:
 ```
 python main.py
 ```
+
+>Note: curses behaves differently across operating systems. The game is designed around a terminal environment, so Windows users may need an appropriate curses-compatible environment.
