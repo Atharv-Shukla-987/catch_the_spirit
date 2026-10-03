@@ -16,6 +16,17 @@ see the shop here
 
 <img width="370" height="350" alt="image" src="https://github.com/user-attachments/assets/aafe969e-12fb-4346-905c-5c1d9d359983" />
 
+## project structure
+
+catch_the_spirit/ 
+│
+├── main.py 
+├── bg_song.mp3 
+├── churail_wali_hasi.mp3 
+├── lvl.mp3 
+├── .gitattributes 
+└── README.md
+
 ## how to play
 
 ### option 1 - download the release
@@ -46,3 +57,19 @@ python main.py
 ```
 
 >Note: curses behaves differently across operating systems. The game is designed around a terminal environment, so Windows users may need an appropriate curses-compatible environment.
+
+
+## future scopes
+
+possible future add on can be 
+
+1. more missions
+2. more spirits
+3. more costume
+4. more locations
+5. additional sound effects
+6. save/load system
+7. more abilities
+
+
+Plzzzz give me a ⭐ !!!!
