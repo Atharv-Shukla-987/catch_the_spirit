@@ -17,7 +17,7 @@ see the shop here
 <img width="370" height="350" alt="image" src="https://github.com/user-attachments/assets/aafe969e-12fb-4346-905c-5c1d9d359983" />
 
 ## project structure
-
+```
 catch_the_spirit/ 
 │
 ├── main.py 
@@ -26,7 +26,7 @@ catch_the_spirit/
 ├── lvl.mp3 
 ├── .gitattributes 
 └── README.md
-
+```
 ## how to play
 
 ### option 1 - download the release
